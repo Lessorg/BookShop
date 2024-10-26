@@ -14,7 +14,7 @@ import test.project.bookshop.service.BookService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/books")
+@RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
 
@@ -25,7 +25,7 @@ public class BookController {
 
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable Long id) {
-        return bookService.findByid(id);//
+        return bookService.findByid(id);
     }
 
     @PostMapping

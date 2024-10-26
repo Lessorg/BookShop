@@ -7,6 +7,7 @@ import test.project.bookshop.dto.BookDto;
 import test.project.bookshop.dto.BookRequestDto;
 import test.project.bookshop.exception.EntityNotFoundException;
 import test.project.bookshop.mapper.BookMapper;
+import test.project.bookshop.model.Book;
 import test.project.bookshop.repository.BookRepository;
 import test.project.bookshop.service.BookService;
 
@@ -18,7 +19,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(BookRequestDto bookRequestDto) {
-        return bookMapper.toDto(bookRepository.save(bookMapper.toBook(bookRequestDto)));
+        Book book = bookMapper.toBook(bookRequestDto);
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
