@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import test.project.bookshop.exception.DataProcessingException;
 import test.project.bookshop.model.Book;
 import test.project.bookshop.repository.BookRepository;
 
@@ -28,7 +29,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't save book " + book, e);
+            throw new DataProcessingException("Can't save book " + book, e);
         }
     }
 
@@ -37,7 +38,7 @@ public class BookRepositoryImpl implements BookRepository {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             return entityManager.createQuery("SELECT b FROM Book b", Book.class).getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Can't find books", e);
+            throw new DataProcessingException("Can't find books", e);
         }
     }
 
@@ -47,7 +48,7 @@ public class BookRepositoryImpl implements BookRepository {
             Book book = entityManager.find(Book.class, id);
             return Optional.ofNullable(book);
         } catch (Exception e) {
-            throw new RuntimeException("Can't find book by id",e);
+            throw new DataProcessingException("Can't find book by id " + id, e);
         }
     }
 }
