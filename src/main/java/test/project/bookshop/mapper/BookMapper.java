@@ -18,5 +18,5 @@ public interface BookMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "deleted", ignore = true)
-    void updateBookFromDto(BookRequestDto bookDto, @MappingTarget Book book);
+    Book updateBookFromDto(BookRequestDto bookDto, @MappingTarget Book book);
 }
