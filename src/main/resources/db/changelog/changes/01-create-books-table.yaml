@@ -45,5 +45,3 @@ databaseChangeLog:
                   type: bool
                   constraints:
                     nullable: false
-        - sql:
-            sql: "ALTER TABLE books ALTER COLUMN is_deleted SET DEFAULT false"
