@@ -32,30 +32,30 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto findById(Long id) {
-        return bookMapper.toDto(bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can't find book by id: " + id)));
+        return bookMapper.toDto(findBookById(id));
     }
 
     @Override
     public BookDto delete(Long id) {
-        Book existingBook = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can't find book by id: " + id));
+        if (!bookRepository.existsById(id)) {
+            throw new EntityNotFoundException("Book with id " + id + " does not exist.");
+        }
+        Book book = findBookById(id);
+
         bookRepository.deleteById(id);
-        return bookMapper.toDto(existingBook);
+        return bookMapper.toDto(book);
     }
 
     @Override
     public BookDto update(Long id, BookRequestDto requestDto) {
-        Book existingBook = bookRepository.findById(id).orElseThrow(
+        Book book = findBookById(id);
+
+        book = bookMapper.updateBookFromDto(requestDto, book);
+        return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    private Book findBookById(Long id) {
+        return bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find book by id: " + id));
-
-        existingBook.setTitle(requestDto.getTitle());
-        existingBook.setAuthor(requestDto.getAuthor());
-        existingBook.setIsbn(requestDto.getIsbn());
-        existingBook.setPrice(requestDto.getPrice());
-        existingBook.setDescription(requestDto.getDescription());
-        existingBook.setCoverImage(requestDto.getCoverImage());
-
-        return bookMapper.toDto(bookRepository.save(existingBook));
     }
 }

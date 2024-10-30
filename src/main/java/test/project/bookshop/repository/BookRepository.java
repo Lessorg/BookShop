@@ -5,4 +5,5 @@ import test.project.bookshop.model.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+
 }
