@@ -1,13 +1,9 @@
 package test.project.bookshop.repository;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import test.project.bookshop.model.Book;
 
-public interface BookRepository {
-    Book save(Book book);
+public interface BookRepository extends JpaRepository<Book, Long> {
 
-    List<Book> findAll();
 
-    Optional<Book> findByid(Long id);
 }
