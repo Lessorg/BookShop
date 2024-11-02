@@ -1,6 +1,7 @@
 package test.project.bookshop.service.impl;
 
 import java.util.List;
+<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -68,5 +69,30 @@ public class BookServiceImpl implements BookService {
     private Book findBookById(Long id) {
         return bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find book by id: " + id));
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import test.project.bookshop.model.Book;
+import test.project.bookshop.repository.BookRepository;
+import test.project.bookshop.service.BookService;
+
+@Service
+public class BookServiceImpl implements BookService {
+    private final BookRepository bookRepository;
+
+    @Autowired
+    public BookServiceImpl(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    @Override
+    public Book save(Book book) {
+        return bookRepository.save(book);
+    }
+
+    @Override
+    public List findAll() {
+        return bookRepository.findAll();
+>>>>>>> master
     }
 }
