@@ -8,14 +8,16 @@ import test.project.bookshop.repository.SpecificationProvider;
 
 @Component
 public class TitleSpecificationProvider implements SpecificationProvider<Book> {
+    private static final String TITLE_COLUMN_NAME = "title";
 
     @Override
     public String getKey() {
-        return "title";
+        return TITLE_COLUMN_NAME;
     }
 
     @Override
     public Specification<Book> getSpecification(String[] params) {
-        return (root, query, cb) -> root.get("title").in(Arrays.stream(params).toArray());
+        return (root, query, cb) -> root.get(TITLE_COLUMN_NAME)
+                .in(Arrays.stream(params).toArray());
     }
 }

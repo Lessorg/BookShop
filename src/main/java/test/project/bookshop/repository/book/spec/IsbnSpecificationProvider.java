@@ -8,13 +8,16 @@ import test.project.bookshop.repository.SpecificationProvider;
 
 @Component
 public class IsbnSpecificationProvider implements SpecificationProvider<Book> {
+    private static final String ISBN_COLUMN_NAME = "isbn";
+
     @Override
     public String getKey() {
-        return "isbn";
+        return ISBN_COLUMN_NAME;
     }
 
     @Override
     public Specification<Book> getSpecification(String[] params) {
-        return (root, query, cb) -> root.get("isbn").in(Arrays.stream(params).toArray());
+        return (root, query, cb) -> root.get(ISBN_COLUMN_NAME)
+                .in(Arrays.stream(params).toArray());
     }
 }
