@@ -2,6 +2,7 @@ package test.project.bookshop.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import test.project.bookshop.dto.BookDto;
 import test.project.bookshop.dto.BookRequestDto;
+import test.project.bookshop.dto.BookSearchParametersDto;
 import test.project.bookshop.service.BookService;
 
 @RequiredArgsConstructor
@@ -28,6 +30,11 @@ public class BookController {
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> search(BookSearchParametersDto searchParameters, Pageable pageable) {
+        return bookService.search(searchParameters);
     }
 
     @PostMapping
