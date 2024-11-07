@@ -1,7 +1,5 @@
 package test.project.bookshop.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,14 +8,9 @@ import lombok.Setter;
 @Setter
 public class BookDto {
     private int id;
-    @NotNull
     private String title;
-    @NotNull
     private String author;
-    @NotNull
     private String isbn;
-    @NotNull
-    @Min(0)
     private BigDecimal price;
     private String description;
     private String coverImage;

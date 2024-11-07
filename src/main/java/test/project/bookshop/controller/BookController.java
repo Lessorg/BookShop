@@ -1,6 +1,5 @@
 package test.project.bookshop.controller;
 
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +38,7 @@ public class BookController {
     }
 
     @PostMapping
-    public BookDto createBook(@RequestBody @Valid BookRequestDto requestDto) {
+    public BookDto createBook(@RequestBody BookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
 
@@ -49,8 +48,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public BookDto updateBook(@PathVariable Long id,
-                              @RequestBody @Valid BookRequestDto requestDto) {
+    public BookDto updateBook(@PathVariable Long id, @RequestBody BookRequestDto requestDto) {
         return bookService.update(id, requestDto);
     }
 }
