@@ -2,7 +2,7 @@ package test.project.bookshop.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import test.project.bookshop.dto.BookDto;
-import test.project.bookshop.dto.BookRequestDto;
-import test.project.bookshop.dto.BookSearchParametersDto;
+import test.project.bookshop.dto.book.BookDto;
+import test.project.bookshop.dto.book.BookRequestDto;
+import test.project.bookshop.dto.book.BookSearchParametersDto;
 import test.project.bookshop.service.BookService;
 
 @Tag(name = "Bookshop", description = "Endpoints for bookshop")
