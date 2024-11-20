@@ -1,10 +1,10 @@
 package test.project.bookshop.dto.user;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import test.project.bookshop.validation.FieldMatch;
 
 @Getter
@@ -24,6 +24,5 @@ public class UserRegistrationRequestDto {
     private String firstName;
     @NotBlank
     private String lastName;
-    @NotBlank
     private String shippingAddress;
 }
