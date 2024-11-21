@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import test.project.bookshop.dto.BookDto;
-import test.project.bookshop.dto.BookRequestDto;
-import test.project.bookshop.dto.BookSearchParametersDto;
+import test.project.bookshop.dto.book.BookDto;
+import test.project.bookshop.dto.book.BookRequestDto;
+import test.project.bookshop.dto.book.BookSearchParametersDto;
 import test.project.bookshop.service.BookService;
 
 @Tag(name = "Bookshop", description = "Endpoints for bookshop")
