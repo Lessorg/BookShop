@@ -2,8 +2,10 @@ package test.project.bookshop.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.ValidationException;
+import org.apache.commons.beanutils.BeanUtils;
 
-public class FieldMatchValidator implements ConstraintValidator<FieldMatch, String> {
+public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
     private String firstFieldName;
     private String secondFieldName;
 
@@ -14,7 +16,14 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Stri
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return firstFieldName != null && firstFieldName.equals(secondFieldName);
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        try {
+            final Object firstObj = BeanUtils.getProperty(value, firstFieldName);
+            final Object secondObj = BeanUtils.getProperty(value, secondFieldName);
+
+            return firstObj != null && firstObj.equals(secondObj);
+        } catch (Exception exception) {
+            throw new ValidationException("Can't compare objects " + exception);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package test.project.bookshop.validation;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,4 +15,5 @@ public @interface FieldMatch {
     String firstField();
     String secondField();
     Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }
