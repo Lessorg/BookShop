@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
             throw new RegistrationException("Can't register user with email "
                     + requestDto.getEmail());
         }
-        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         User user = userMapper.toUser(requestDto);
+        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setRoles(roleRepository.findByName(Role.RoleName.ROLE_USER));
         return userMapper.toUserDto(userRepository.save(user));
     }

@@ -50,7 +50,7 @@ databaseChangeLog:
       author: Nikolai
       changes:
         - insert:
-            tableName: user_roles
+            tableName: users_roles
             columns:
               - column:
                   name: user_id
@@ -59,7 +59,7 @@ databaseChangeLog:
                   name: role_id
                   value: '1'
         - insert:
-            tableName: user_roles
+            tableName: users_roles
             columns:
               - column:
                   name: user_id
@@ -68,7 +68,7 @@ databaseChangeLog:
                   name: role_id
                   value: '2'
         - insert:
-            tableName: user_roles
+            tableName: users_roles
             columns:
               - column:
                   name: user_id
