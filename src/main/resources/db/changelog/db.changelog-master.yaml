@@ -6,8 +6,10 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/03-create-role-table.yaml
   - include:
-      file: db/changelog/changes/04-add-roles.yaml
+      file: db/changelog/changes/04-create-user-roles-table.yaml
   - include:
-      file: db/changelog/changes/05-add-users.yaml
+      file: db/changelog/changes/05-add-roles.yaml
   - include:
       file: db/changelog/changes/06-add-random-books.yaml
+  - include:
+      file: db/changelog/changes/07-add-users.yaml

@@ -21,6 +21,9 @@ databaseChangeLog:
               - column:
                   name: shipping_address
                   value: '123 Main St'
+              - column:
+                  name: is_deleted
+                  value: '0'
         - insert:
             tableName: users
             columns:
@@ -39,6 +42,9 @@ databaseChangeLog:
               - column:
                   name: shipping_address
                   value: '456 Admin Rd'
+              - column:
+                  name: is_deleted
+                  value: '0'
   - changeSet:
       id: assign-roles-to-users
       author: Nikolai
@@ -61,3 +67,12 @@ databaseChangeLog:
               - column:
                   name: role_id
                   value: '2'
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: '2'
+              - column:
+                  name: role_id
+                  value: '1'
