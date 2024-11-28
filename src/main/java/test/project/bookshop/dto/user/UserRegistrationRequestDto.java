@@ -1,10 +1,10 @@
 package test.project.bookshop.dto.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import test.project.bookshop.validation.FieldMatch;
 
 @Getter
@@ -15,10 +15,10 @@ public class UserRegistrationRequestDto {
     @Email
     private String email;
     @NotBlank
-    @Length(min = 8, max = 35)
+    @Size(min = 8, max = 35)
     private String password;
     @NotBlank
-    @Length(min = 8, max = 35)
+    @Size(min = 8, max = 35)
     private String repeatPassword;
     @NotBlank
     private String firstName;
