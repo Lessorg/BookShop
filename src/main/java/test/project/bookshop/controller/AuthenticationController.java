@@ -2,6 +2,7 @@ package test.project.bookshop.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ public class AuthenticationController {
     @Operation(summary = "Register a new user",
             description = "Registers a new user with the provided details")
     @PostMapping("/registration")
-    public UserResponseDto register(@RequestBody UserRegistrationRequestDto requestDto)
+    public UserResponseDto register(@RequestBody @Valid UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         return userService.register(requestDto);
     }

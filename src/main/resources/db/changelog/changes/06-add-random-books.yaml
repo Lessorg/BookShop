@@ -1,0 +1,125 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-random-books
+      author: Nikolai
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: 'Random Book 1'
+              - column:
+                  name: author
+                  value: 'Author 1'
+              - column:
+                  name: isbn
+                  value: '978-3-16-148410-0'
+              - column:
+                  name: price
+                  value: '19.99'
+              - column:
+                  name: description
+                  value: 'Description for Random Book 1'
+              - column:
+                  name: cover_image
+                  value: 'http://example.com/cover1.jpg'
+              - column:
+                  name: is_deleted
+                  value: '0'
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: 'Random Book 2'
+              - column:
+                  name: author
+                  value: 'Author 2'
+              - column:
+                  name: isbn
+                  value: '978-1-23-456789-0'
+              - column:
+                  name: price
+                  value: '29.99'
+              - column:
+                  name: description
+                  value: 'Description for Random Book 2'
+              - column:
+                  name: cover_image
+                  value: 'http://example.com/cover2.jpg'
+              - column:
+                  name: is_deleted
+                  value: '0'
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: 'Random Book 3'
+              - column:
+                  name: author
+                  value: 'Author 3'
+              - column:
+                  name: isbn
+                  value: '978-0-12-345678-9'
+              - column:
+                  name: price
+                  value: '39.99'
+              - column:
+                  name: description
+                  value: 'Description for Random Book 3'
+              - column:
+                  name: cover_image
+                  value: 'http://example.com/cover3.jpg'
+              - column:
+                  name: is_deleted
+                  value: '0'
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: 'Random Book 4'
+              - column:
+                  name: author
+                  value: 'Author 4'
+              - column:
+                  name: isbn
+                  value: '978-4-56-789012-3'
+              - column:
+                  name: price
+                  value: '49.99'
+              - column:
+                  name: description
+                  value: 'Description for Random Book 4'
+              - column:
+                  name: cover_image
+                  value: 'http://example.com/cover4.jpg'
+              - column:
+                  name: is_deleted
+                  value: '0'
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: 'Random Book 5'
+              - column:
+                  name: author
+                  value: 'Author 5'
+              - column:
+                  name: isbn
+                  value: '978-5-67-890123-4'
+              - column:
+                  name: price
+                  value: '59.99'
+              - column:
+                  name: description
+                  value: 'Description for Random Book 5'
+              - column:
+                  name: cover_image
+                  value: 'http://example.com/cover5.jpg'
+              - column:
+                  name: is_deleted
+                  value: '0'

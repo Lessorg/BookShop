@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import test.project.bookshop.service.BookService;
 public class BookController {
     private final BookService bookService;
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @Operation(
             summary = "Get all books",
@@ -38,6 +40,7 @@ public class BookController {
         return bookService.findAll(pageable);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     @Operation(
             summary = "Get book with id",
@@ -46,6 +49,7 @@ public class BookController {
         return bookService.findById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/search")
     @Operation(
             summary = "Search for books",
@@ -55,6 +59,7 @@ public class BookController {
         return bookService.search(searchParameters, pageable);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book",
@@ -63,6 +68,7 @@ public class BookController {
         return bookService.save(requestDto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
@@ -72,6 +78,7 @@ public class BookController {
         bookService.delete(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(
             summary = "Update a book",
