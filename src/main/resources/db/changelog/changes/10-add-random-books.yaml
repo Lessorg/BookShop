@@ -8,22 +8,22 @@ databaseChangeLog:
             columns:
               - column:
                   name: title
-                  value: 'Random Book 1'
+                  value: 'Pride and Prejudice'
               - column:
                   name: author
-                  value: 'Author 1'
+                  value: 'Jane Austen'
               - column:
                   name: isbn
                   value: '978-3-16-148410-0'
               - column:
                   name: price
-                  value: '19.99'
+                  value: '9.99'
               - column:
                   name: description
-                  value: 'Description for Random Book 1'
+                  value: 'A classic novel about love and social standing.'
               - column:
                   name: cover_image
-                  value: 'http://example.com/cover1.jpg'
+                  value: 'http://example.com/pride_and_prejudice.jpg'
               - column:
                   name: is_deleted
                   value: '0'
@@ -32,22 +32,22 @@ databaseChangeLog:
             columns:
               - column:
                   name: title
-                  value: 'Random Book 2'
+                  value: '1984'
               - column:
                   name: author
-                  value: 'Author 2'
+                  value: 'George Orwell'
               - column:
                   name: isbn
-                  value: '978-1-23-456789-0'
+                  value: '978-0-452-28423-4'
               - column:
                   name: price
-                  value: '29.99'
+                  value: '14.99'
               - column:
                   name: description
-                  value: 'Description for Random Book 2'
+                  value: 'A dystopian novel set in a totalitarian society.'
               - column:
                   name: cover_image
-                  value: 'http://example.com/cover2.jpg'
+                  value: 'http://example.com/1984.jpg'
               - column:
                   name: is_deleted
                   value: '0'
@@ -56,22 +56,22 @@ databaseChangeLog:
             columns:
               - column:
                   name: title
-                  value: 'Random Book 3'
+                  value: 'To Kill a Mockingbird'
               - column:
                   name: author
-                  value: 'Author 3'
+                  value: 'Harper Lee'
               - column:
                   name: isbn
-                  value: '978-0-12-345678-9'
+                  value: '978-0-06-112008-4'
               - column:
                   name: price
-                  value: '39.99'
+                  value: '12.99'
               - column:
                   name: description
-                  value: 'Description for Random Book 3'
+                  value: 'A novel about racial injustice in the Deep South.'
               - column:
                   name: cover_image
-                  value: 'http://example.com/cover3.jpg'
+                  value: 'http://example.com/to_kill_a_mockingbird.jpg'
               - column:
                   name: is_deleted
                   value: '0'
@@ -80,22 +80,22 @@ databaseChangeLog:
             columns:
               - column:
                   name: title
-                  value: 'Random Book 4'
+                  value: 'The Great Gatsby'
               - column:
                   name: author
-                  value: 'Author 4'
+                  value: 'F. Scott Fitzgerald'
               - column:
                   name: isbn
-                  value: '978-4-56-789012-3'
+                  value: '978-0-7432-7356-5'
               - column:
                   name: price
-                  value: '49.99'
+                  value: '10.99'
               - column:
                   name: description
-                  value: 'Description for Random Book 4'
+                  value: 'A novel about the American dream and the Roaring Twenties.'
               - column:
                   name: cover_image
-                  value: 'http://example.com/cover4.jpg'
+                  value: 'http://example.com/the_great_gatsby.jpg'
               - column:
                   name: is_deleted
                   value: '0'
@@ -104,22 +104,22 @@ databaseChangeLog:
             columns:
               - column:
                   name: title
-                  value: 'Random Book 5'
+                  value: 'Moby Dick'
               - column:
                   name: author
-                  value: 'Author 5'
+                  value: 'Herman Melville'
               - column:
                   name: isbn
-                  value: '978-5-67-890123-4'
+                  value: '978-0-14-243724-7'
               - column:
                   name: price
-                  value: '59.99'
+                  value: '11.99'
               - column:
                   name: description
-                  value: 'Description for Random Book 5'
+                  value: 'A novel about the obsessive quest of Ahab for revenge on Moby Dick.'
               - column:
                   name: cover_image
-                  value: 'http://example.com/cover5.jpg'
+                  value: 'http://example.com/moby_dick.jpg'
               - column:
                   name: is_deleted
                   value: '0'

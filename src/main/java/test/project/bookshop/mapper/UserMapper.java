@@ -12,5 +12,6 @@ public interface UserMapper {
     UserResponseDto toUserDto(User user);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     User toUser(UserRegistrationRequestDto userDto);
 }
