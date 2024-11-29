@@ -1,10 +1,10 @@
 package test.project.bookshop.dto.book;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter
