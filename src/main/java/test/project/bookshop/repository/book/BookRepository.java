@@ -8,5 +8,5 @@ import test.project.bookshop.model.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long>,
         JpaSpecificationExecutor<Book> {
-    Page<Book> findAllByCategories_Id(Long categoryId, Pageable pageable);
+    Page<Book> findAllByCategoriesId(Long categoryId, Pageable pageable);
 }

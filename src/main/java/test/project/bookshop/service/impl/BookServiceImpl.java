@@ -63,7 +63,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<BookDto> findBooksByCategotyId(Long id, Pageable pageable) {
-        Page<Book> bookPage = bookRepository.findAllByCategories_Id(id, pageable);
+        Page<Book> bookPage = bookRepository.findAllByCategoriesId(id, pageable);
         List<BookDto> bookDtoList = bookPage.stream()
                 .map(bookMapper::toDto)
                 .toList();
