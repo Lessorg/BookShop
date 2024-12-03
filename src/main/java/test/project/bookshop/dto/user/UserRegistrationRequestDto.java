@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import test.project.bookshop.validation.FieldMatch;
 
 @Getter
@@ -15,10 +18,10 @@ public class UserRegistrationRequestDto {
     @Email
     private String email;
     @NotBlank
-    @Length(min = 8, max = 35)
+    @Size(min = 8, max = 35)
     private String password;
     @NotBlank
-    @Length(min = 8, max = 35)
+    @Size(min = 8, max = 35)
     private String repeatPassword;
     @NotBlank
     private String firstName;

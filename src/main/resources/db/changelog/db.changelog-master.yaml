@@ -25,3 +25,4 @@ databaseChangeLog:
       file: db/changelog/changes/12-add-random-books.yaml
   - include:
       file: db/changelog/changes/13-add-books-categories.yaml
+      

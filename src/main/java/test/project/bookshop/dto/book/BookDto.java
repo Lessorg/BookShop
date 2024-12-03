@@ -2,6 +2,7 @@ package test.project.bookshop.dto.book;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
