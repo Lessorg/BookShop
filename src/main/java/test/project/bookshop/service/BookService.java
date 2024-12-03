@@ -5,13 +5,14 @@ import org.springframework.data.domain.Pageable;
 import test.project.bookshop.dto.book.BookDto;
 import test.project.bookshop.dto.book.BookRequestDto;
 import test.project.bookshop.dto.book.BookSearchParametersDto;
+import test.project.bookshop.dto.book.BookWithoutCategoryIdsDto;
 
 public interface BookService {
     BookDto save(BookRequestDto bookRequestDto);
 
     Page<BookDto> findAll(Pageable pageable);
 
-    BookDto findById(Long id);
+    BookWithoutCategoryIdsDto findById(Long id);
 
     void delete(Long id);
 

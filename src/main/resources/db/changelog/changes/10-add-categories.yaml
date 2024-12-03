@@ -12,6 +12,9 @@ databaseChangeLog:
               - column:
                   name: description
                   value: Books that contain fictional stories and characters.
+              - column:
+                  name: is_deleted
+                  value: '0'
         - insert:
             tableName: categories
             columns:
@@ -21,6 +24,9 @@ databaseChangeLog:
               - column:
                   name: description
                   value: Books that explore scientific concepts and discoveries.
+              - column:
+                  name: is_deleted
+                  value: '0'
         - insert:
             tableName: categories
             columns:
@@ -30,3 +36,6 @@ databaseChangeLog:
               - column:
                   name: description
                   value: Books that delve into historical events and figures.
+              - column:
+                  name: is_deleted
+                  value: '0'

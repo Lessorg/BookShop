@@ -1,0 +1,10 @@
+package test.project.bookshop.dto.shopping.cart;
+
+import java.util.List;
+
+public record ResponseCartDto(
+        Long id,
+        Long userId,
+        List<CartItemDto> cartItems
+) {
+}

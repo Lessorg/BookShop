@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import test.project.bookshop.dto.book.BookDto;
 import test.project.bookshop.dto.book.BookRequestDto;
 import test.project.bookshop.dto.book.BookSearchParametersDto;
+import test.project.bookshop.dto.book.BookWithoutCategoryIdsDto;
 import test.project.bookshop.service.BookService;
 
 @Tag(name = "Bookshop", description = "Endpoints for bookshop")
@@ -45,7 +46,7 @@ public class BookController {
     @Operation(
             summary = "Get book with id",
             description = "Retrieve a book by its unique identifier")
-    public BookDto getBookById(@PathVariable Long id) {
+    public BookWithoutCategoryIdsDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 

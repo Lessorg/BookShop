@@ -76,3 +76,19 @@ databaseChangeLog:
               - column:
                   name: role_id
                   value: '1'
+  - changeSet:
+      id: add-shopping-carts
+      author: Nikolai
+      changes:
+        - insert:
+            tableName: shopping_carts
+            columns:
+              - column:
+                  name: user_id
+                  value: '1'
+        - insert:
+            tableName: shopping_carts
+            columns:
+              - column:
+                  name: user_id
+                  value: '2'

@@ -67,6 +67,7 @@ public class CategoryController {
     @Operation(
             summary = "Create a new category",
             description = "Create a new category")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public CategoryDto createCategory(@RequestBody @Valid CategoryRequestDto requestDto) {
         return categoryService.save(requestDto);
