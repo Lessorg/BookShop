@@ -1,9 +1,9 @@
 package test.project.bookshop.dto.shopping.cart;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
 public record UpdateCartItemRequest(
-        @Min(value = 1)
+        @Positive
         int quantity
 ) {
 }

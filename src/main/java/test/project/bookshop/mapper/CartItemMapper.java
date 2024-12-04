@@ -14,12 +14,9 @@ import test.project.bookshop.model.ShoppingCart;
 @Mapper(config = MapperConfig.class)
 public interface CartItemMapper {
     @Mapping(target = "bookId", source = "book.id")
-    @Mapping(target = "id", source = "id")
     @Mapping(target = "bookTitle", source = "book.title")
     CartItemDto toDto(CartItem cartItem);
 
-    @Mapping(target = "book", source = "book")
-    @Mapping(target = "shoppingCart", source = "shoppingCart")
     @Mapping(target = "id", ignore = true)
     CartItem toEntity(AddBookToCartDto bookToCartDto, ShoppingCart shoppingCart, Book book);
 

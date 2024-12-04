@@ -9,6 +9,5 @@ import test.project.bookshop.model.ShoppingCart;
 @Mapper(config = MapperConfig.class, uses = {CartItemMapper.class})
 public interface ShoppingCartMapper {
     @Mapping(target = "userId", source = "shoppingCart.user.id")
-    @Mapping(target = "cartItems", source = "cartItems")
     CartResponseDto toDto(ShoppingCart shoppingCart);
 }

@@ -2,6 +2,7 @@ package test.project.bookshop.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,7 @@ public class ShoppingCartController {
     @Operation(
             summary = "Add book to shopping cart",
             description = "Add a book to the user's shopping cart")
-    public CartResponseDto addBook(@RequestBody AddBookToCartDto bookToCartDto) {
+    public CartResponseDto addBook(@RequestBody @Valid AddBookToCartDto bookToCartDto) {
         return shoppingCartService.add(bookToCartDto);
     }
 
