@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import test.project.bookshop.dto.shopping.cart.AddBookToCartDto;
 import test.project.bookshop.dto.shopping.cart.CartItemDto;
-import test.project.bookshop.dto.shopping.cart.ResponseCartDto;
+import test.project.bookshop.dto.shopping.cart.CartResponseDto;
 import test.project.bookshop.dto.shopping.cart.UpdateCartItemRequest;
 import test.project.bookshop.exception.EntityNotFoundException;
 import test.project.bookshop.mapper.ShoppingCartMapper;
@@ -16,6 +16,7 @@ import test.project.bookshop.service.CartItemService;
 import test.project.bookshop.service.ShoppingCartService;
 import test.project.bookshop.service.UserService;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -24,20 +25,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final UserService userService;
     private final CartItemService cartItemService;
 
-    @Transactional
     @Override
-    public ResponseCartDto add(AddBookToCartDto bookToCartDto) {
+    public CartResponseDto add(AddBookToCartDto bookToCartDto) {
         ShoppingCart cart = getUserCart();
         cartItemService.add(bookToCartDto, cart);
         return shoppingCartMapper.toDto(cart);
     }
 
     @Override
-    public ResponseCartDto getContent() {
+    public CartResponseDto getCart() {
         return shoppingCartMapper.toDto(getUserCart());
     }
 
-    @Transactional
     @Override
     public CartItemDto update(Long cartItemId, UpdateCartItemRequest updateCartItemRequest) {
         return cartItemService.update(cartItemId, updateCartItemRequest);

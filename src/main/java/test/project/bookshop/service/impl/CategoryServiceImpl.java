@@ -1,5 +1,8 @@
 package test.project.bookshop.service.impl;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +52,13 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Set<Category> findCategoriesByIds(List<Long> categoryIds) {
+        return categoryIds.stream()
+                .map(this::findCategoryById)
+                .collect(Collectors.toSet());
     }
 
     private Category findCategoryById(Long id) {

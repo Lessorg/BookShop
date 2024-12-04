@@ -13,9 +13,11 @@ public interface CategoryMapper {
     CategoryDto toDto(Category category);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     Category toCategory(CategoryRequestDto categoryRequestDto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     void updateCategoryFromDto(CategoryRequestDto categoryRequestDto,
                                @MappingTarget Category category);
 }

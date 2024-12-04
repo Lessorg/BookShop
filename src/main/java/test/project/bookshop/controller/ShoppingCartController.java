@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import test.project.bookshop.dto.shopping.cart.AddBookToCartDto;
 import test.project.bookshop.dto.shopping.cart.CartItemDto;
-import test.project.bookshop.dto.shopping.cart.ResponseCartDto;
+import test.project.bookshop.dto.shopping.cart.CartResponseDto;
 import test.project.bookshop.dto.shopping.cart.UpdateCartItemRequest;
 import test.project.bookshop.service.ShoppingCartService;
 
@@ -30,7 +30,7 @@ public class ShoppingCartController {
     @Operation(
             summary = "Add book to shopping cart",
             description = "Add a book to the user's shopping cart")
-    public ResponseCartDto addBook(@RequestBody AddBookToCartDto bookToCartDto) {
+    public CartResponseDto addBook(@RequestBody AddBookToCartDto bookToCartDto) {
         return shoppingCartService.add(bookToCartDto);
     }
 
@@ -39,8 +39,8 @@ public class ShoppingCartController {
     @Operation(
             summary = "Get shopping cart contents",
             description = "Retrieve the current user's shopping cart contents")
-    public ResponseCartDto getCartContents() {
-        return shoppingCartService.getContent();
+    public CartResponseDto getCartContents() {
+        return shoppingCartService.getCart();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

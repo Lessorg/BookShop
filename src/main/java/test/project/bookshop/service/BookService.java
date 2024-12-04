@@ -6,6 +6,7 @@ import test.project.bookshop.dto.book.BookDto;
 import test.project.bookshop.dto.book.BookRequestDto;
 import test.project.bookshop.dto.book.BookSearchParametersDto;
 import test.project.bookshop.dto.book.BookWithoutCategoryIdsDto;
+import test.project.bookshop.model.Book;
 
 public interface BookService {
     BookDto save(BookRequestDto bookRequestDto);
@@ -20,5 +21,7 @@ public interface BookService {
 
     Page<BookDto> search(BookSearchParametersDto searchParameters, Pageable pageable);
 
-    Page<BookDto> findBooksByCategotyId(Long id, Pageable pageable);
+    Page<BookDto> findBooksByCategoryId(Long id, Pageable pageable);
+
+    Book findBookById(Long id);
 }

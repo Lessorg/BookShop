@@ -11,24 +11,29 @@ import test.project.bookshop.mapper.CartItemMapper;
 import test.project.bookshop.model.CartItem;
 import test.project.bookshop.model.ShoppingCart;
 import test.project.bookshop.repository.cart.item.CartItemRepository;
+import test.project.bookshop.service.BookService;
 import test.project.bookshop.service.CartItemService;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
     private final CartItemMapper cartItemMapper;
+    private final BookService bookService;
 
-    @Transactional
     @Override
     public CartItemDto add(AddBookToCartDto bookToCartDto, ShoppingCart cart) {
-        CartItem cartItem = cartItemMapper.toEntity(bookToCartDto, cart);
+        CartItem cartItem = cartItemMapper.toEntity(
+                bookToCartDto,
+                cart,
+                bookService.findBookById(bookToCartDto.bookId()));
+
         cart.getCartItems().add(cartItem);
         cartItemRepository.save(cartItem);
         return cartItemMapper.toDto(cartItem);
     }
 
-    @Transactional
     @Override
     public CartItemDto update(Long cartItemId, UpdateCartItemRequest updateCartItemRequest) {
         CartItem cartItem = cartItemRepository.findCartItemById(cartItemId)
@@ -38,7 +43,6 @@ public class CartItemServiceImpl implements CartItemService {
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
     }
 
-    @Transactional
     @Override
     public void delete(Long cartItemId) {
         if (!cartItemRepository.existsById(cartItemId)) {

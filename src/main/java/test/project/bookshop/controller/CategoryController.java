@@ -51,7 +51,7 @@ public class CategoryController {
     public Page<BookDto> getBooksByCategoryId(
             @PathVariable Long id,
             @ParameterObject @PageableDefault Pageable pageable) {
-        return bookService.findBooksByCategotyId(id, pageable);
+        return bookService.findBooksByCategoryId(id, pageable);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
