@@ -1,6 +1,5 @@
 package test.project.bookshop.service;
 
-import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Page;
@@ -20,5 +19,5 @@ public interface CategoryService {
 
     void deleteById(Long id);
 
-    Set<Category> findCategoriesByIds(@NotEmpty List<Long> categoryIds);
+    Set<Category> findCategoriesByIds(List<Long> categoryIds);
 }
