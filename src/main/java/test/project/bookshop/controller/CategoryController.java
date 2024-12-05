@@ -28,7 +28,7 @@ import test.project.bookshop.service.CategoryService;
 @Tag(name = "Categories", description = "Endpoints for managing categories")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
     private final BookService bookService;

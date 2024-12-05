@@ -1,8 +1,8 @@
 package test.project.bookshop.dto.book;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class BookRequestDto {
     @NotBlank
     private String description;
     private String coverImage;
-    @Min(0)
+    @Positive
     private BigDecimal price;
     @NotEmpty
     private List<Long> categoryIds;

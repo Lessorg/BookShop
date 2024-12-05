@@ -31,13 +31,14 @@ public class BookServiceImpl implements BookService {
     public BookDto save(BookRequestDto bookRequestDto) {
         Set<Category> categories =
                 categoryService.findCategoriesByIds(bookRequestDto.getCategoryIds());
-        Book book = bookMapper.toBook(bookRequestDto, categories);
+        Book book = bookMapper.toBook(bookRequestDto);
+        book.getCategories().addAll(categories);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
     public Page<BookDto> findAll(Pageable pageable) {
-        return bookRepository.findAll(pageable).map(bookMapper::toDto);
+        return bookRepository.findAllFetchCategories(pageable).map(bookMapper::toDto);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book findBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(
+        return bookRepository.findByIdFetchCategories(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find book by id: " + id));
     }
 

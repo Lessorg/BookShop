@@ -2,7 +2,6 @@ package test.project.bookshop.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import test.project.bookshop.dto.shopping.cart.AddBookToCartDto;
 import test.project.bookshop.dto.shopping.cart.CartItemDto;
@@ -37,12 +36,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public CartResponseDto add(AddBookToCartDto bookToCartDto) {
-        ShoppingCart cart = getUserCart();
-        CartItem cartItem = cartItemMapper.toEntity(
-                bookToCartDto,
-                cart,
-                bookService.findBookById(bookToCartDto.bookId()));
+    public CartResponseDto add(Long userId, AddBookToCartDto bookToCartDto) {
+        ShoppingCart cart = findUserCart(userId);
+        CartItem cartItem = cartItemMapper.toEntity(bookToCartDto);
+        cartItem.setShoppingCart(cart);
+        cartItem.setBook(bookService.findBookById(bookToCartDto.bookId()));
 
         cart.getCartItems().add(cartItem);
         cartItemRepository.save(cartItem);
@@ -51,12 +49,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public CartResponseDto getCart() {
-        return shoppingCartMapper.toDto(getUserCart());
+    public CartResponseDto getCartByUserId(Long userId) {
+        return shoppingCartMapper.toDto(findUserCart(userId));
     }
 
     @Override
-    public CartItemDto update(Long cartItemId, UpdateCartItemRequest updateCartItemRequest) {
+    public CartItemDto update(Long userId,
+                              Long cartItemId,
+                              UpdateCartItemRequest updateCartItemRequest) {
         CartItem cartItem = cartItemRepository.findCartItemById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Cart item with id " + cartItemId + " not found."));
@@ -65,7 +65,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void delete(Long cartItemId) {
+    public void delete(Long userId, Long cartItemId) {
         if (!cartItemRepository.existsById(cartItemId)) {
             throw new EntityNotFoundException(
                     "Cart item with id " + cartItemId + " does not exist.");
@@ -73,11 +73,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItemRepository.deleteById(cartItemId);
     }
 
-    private ShoppingCart getUserCart() {
-        User currentUser =
-                (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return shoppingCartRepository.findShoppingCartByUserId(currentUser.getId())
+    private ShoppingCart findUserCart(Long userId) {
+        return shoppingCartRepository.findByUserIdFetchCartItemsAndBooks(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Shopping cart not found for user: " + currentUser.getId()));
+                        "Shopping cart not found for user: " + userId));
     }
 }

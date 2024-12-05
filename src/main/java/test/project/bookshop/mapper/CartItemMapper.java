@@ -7,9 +7,7 @@ import test.project.bookshop.config.MapperConfig;
 import test.project.bookshop.dto.shopping.cart.AddBookToCartDto;
 import test.project.bookshop.dto.shopping.cart.CartItemDto;
 import test.project.bookshop.dto.shopping.cart.UpdateCartItemRequest;
-import test.project.bookshop.model.Book;
 import test.project.bookshop.model.CartItem;
-import test.project.bookshop.model.ShoppingCart;
 
 @Mapper(config = MapperConfig.class)
 public interface CartItemMapper {
@@ -18,7 +16,7 @@ public interface CartItemMapper {
     CartItemDto toDto(CartItem cartItem);
 
     @Mapping(target = "id", ignore = true)
-    CartItem toEntity(AddBookToCartDto bookToCartDto, ShoppingCart shoppingCart, Book book);
+    CartItem toEntity(AddBookToCartDto bookToCartDto);
 
     @Mapping(target = "book", ignore = true)
     @Mapping(target = "shoppingCart", ignore = true)

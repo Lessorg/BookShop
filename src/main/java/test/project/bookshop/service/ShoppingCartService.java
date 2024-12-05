@@ -9,11 +9,11 @@ import test.project.bookshop.model.User;
 public interface ShoppingCartService {
     void createShoppingCartForUser(User user);
 
-    CartResponseDto add(AddBookToCartDto bookToCartDto);
+    CartResponseDto add(Long userId, AddBookToCartDto bookToCartDto);
 
-    CartResponseDto getCart();
+    CartResponseDto getCartByUserId(Long userId);
 
-    CartItemDto update(Long cartItemId, UpdateCartItemRequest updateCartItemRequest);
+    CartItemDto update(Long userId, Long cartItemId, UpdateCartItemRequest updateCartItemRequest);
 
-    void delete(Long cartItemId);
+    void delete(Long userId, Long cartItemId);
 }
