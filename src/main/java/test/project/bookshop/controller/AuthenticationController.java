@@ -21,7 +21,7 @@ import test.project.bookshop.service.UserService;
 @Tag(name = "User Registration", description = "Operations related to user registration")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
     private final UserService userService;
     private final AuthenticationService authenticationService;

@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-categories
+      author: Nikolai
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Fiction
+              - column:
+                  name: description
+                  value: Books that contain fictional stories and characters.
+              - column:
+                  name: is_deleted
+                  value: '0'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Science
+              - column:
+                  name: description
+                  value: Books that explore scientific concepts and discoveries.
+              - column:
+                  name: is_deleted
+                  value: '0'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: History
+              - column:
+                  name: description
+                  value: Books that delve into historical events and figures.
+              - column:
+                  name: is_deleted
+                  value: '0'

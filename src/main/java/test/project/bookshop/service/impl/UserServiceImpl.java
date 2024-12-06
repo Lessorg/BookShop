@@ -11,6 +11,7 @@ import test.project.bookshop.model.Role;
 import test.project.bookshop.model.User;
 import test.project.bookshop.repository.role.RoleRepository;
 import test.project.bookshop.repository.user.UserRepository;
+import test.project.bookshop.service.ShoppingCartService;
 import test.project.bookshop.service.UserService;
 
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toUser(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setRoles(roleRepository.findByName(Role.RoleName.ROLE_USER));
-        return userMapper.toUserDto(userRepository.save(user));
+        userRepository.save(user);
+        shoppingCartService.createShoppingCartForUser(user);
+        return userMapper.toUserDto(user);
     }
 }
