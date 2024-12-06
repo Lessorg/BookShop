@@ -12,7 +12,7 @@ import test.project.bookshop.dto.category.CategoryRequestDto;
 import test.project.bookshop.exception.EntityNotFoundException;
 import test.project.bookshop.mapper.CategoryMapper;
 import test.project.bookshop.model.Category;
-import test.project.bookshop.repository.category.CategoryRepository;
+import test.project.bookshop.repository.CategoryRepository;
 import test.project.bookshop.service.CategoryService;
 
 @RequiredArgsConstructor

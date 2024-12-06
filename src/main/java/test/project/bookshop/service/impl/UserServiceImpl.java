@@ -9,8 +9,8 @@ import test.project.bookshop.exception.RegistrationException;
 import test.project.bookshop.mapper.UserMapper;
 import test.project.bookshop.model.Role;
 import test.project.bookshop.model.User;
-import test.project.bookshop.repository.role.RoleRepository;
-import test.project.bookshop.repository.user.UserRepository;
+import test.project.bookshop.repository.RoleRepository;
+import test.project.bookshop.repository.UserRepository;
 import test.project.bookshop.service.ShoppingCartService;
 import test.project.bookshop.service.UserService;
 
