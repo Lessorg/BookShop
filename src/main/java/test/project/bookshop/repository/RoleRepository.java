@@ -1,4 +1,4 @@
-package test.project.bookshop.repository.role;
+package test.project.bookshop.repository;
 
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
