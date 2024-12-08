@@ -1,11 +1,9 @@
 package test.project.bookshop.service;
 
-import java.util.Set;
 import test.project.bookshop.dto.shopping.cart.AddBookToCartDto;
 import test.project.bookshop.dto.shopping.cart.CartItemDto;
 import test.project.bookshop.dto.shopping.cart.CartResponseDto;
 import test.project.bookshop.dto.shopping.cart.UpdateCartItemRequest;
-import test.project.bookshop.model.CartItem;
 import test.project.bookshop.model.User;
 
 public interface ShoppingCartService {
@@ -18,6 +16,4 @@ public interface ShoppingCartService {
     CartItemDto update(Long userId, Long cartItemId, UpdateCartItemRequest updateCartItemRequest);
 
     void delete(Long userId, Long cartItemId);
-
-    Set<CartItem> getCartContentByUserId(Long userId);
 }

@@ -1,7 +1,6 @@
 package test.project.bookshop.service.impl;
 
 import jakarta.transaction.Transactional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import test.project.bookshop.dto.shopping.cart.AddBookToCartDto;
@@ -72,11 +71,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     "Cart item with id " + cartItemId + " does not exist.");
         }
         cartItemRepository.deleteById(cartItemId);
-    }
-
-    @Override
-    public Set<CartItem> getCartContentByUserId(Long userId) {
-        return findUserCart(userId).getCartItems();
     }
 
     private ShoppingCart findUserCart(Long userId) {

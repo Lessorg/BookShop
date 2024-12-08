@@ -1,5 +1,6 @@
 package test.project.bookshop.service.impl;
 
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -19,35 +20,46 @@ import test.project.bookshop.model.OrderItem;
 import test.project.bookshop.model.User;
 import test.project.bookshop.repository.OrderItemRepository;
 import test.project.bookshop.repository.OrderRepository;
+import test.project.bookshop.repository.ShoppingCartRepository;
 import test.project.bookshop.service.OrderService;
-import test.project.bookshop.service.ShoppingCartService;
 
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final ShoppingCartService shoppingCartService;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
+    private final ShoppingCartRepository shoppingCartRepository;
 
+    @Transactional
     @Override
     public OrderResponseDto placeOrder(User currentUser) {
-
         Order order = new Order();
         order.setUser(currentUser);
         order.setStatus(Order.Status.PENDING);
         order.setOrderDate(LocalDateTime.now());
         order.setShippingAddress(currentUser.getShippingAddress());
 
-        Set<CartItem> cartContent = shoppingCartService.getCartContentByUserId(currentUser.getId());
+        Set<CartItem> cartContent =
+                shoppingCartRepository
+                        .findByUserId(currentUser.getId())
+                        .orElseThrow(() ->
+                                new EntityNotFoundException(
+                                        "Shopping cart not found for user ID: "
+                                                + currentUser.getId()))
+                        .getCartItems();
+
+        if (cartContent.isEmpty()) {
+            throw new IllegalStateException(
+                    "Cannot place an order with an empty shopping cart for user ID: + "
+                            + currentUser.getId());
+        }
+
         Set<OrderItem> orderContent = orderItemMapper.toEntity(cartContent);
-
         orderContent.forEach(item -> item.setOrder(order));
-
         order.setOrderItems(orderContent);
         order.setTotal(calculateTotal(orderContent));
-
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -72,6 +84,7 @@ public class OrderServiceImpl implements OrderService {
                         "OrderItem not found for order ID: " + orderId + " item ID: " + itemId)));
     }
 
+    @Transactional
     @Override
     public OrderResponseDto updateOrderStatus(Long id, UpdateOrderStatusRequest updateRequest) {
         Order order = orderRepository.findById(id)
