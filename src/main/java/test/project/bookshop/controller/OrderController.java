@@ -2,6 +2,7 @@ package test.project.bookshop.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import test.project.bookshop.dto.order.CreateOrderRequestDto;
 import test.project.bookshop.dto.order.OrderItemResponseDto;
 import test.project.bookshop.dto.order.OrderResponseDto;
 import test.project.bookshop.dto.order.UpdateOrderStatusRequest;
@@ -33,8 +35,9 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Place an order",
             description = "Place an order for the items in the user's shopping cart")
-    public OrderResponseDto placeOrder(Authentication authentication) {
-        return orderService.placeOrder((User) authentication.getPrincipal());
+    public OrderResponseDto placeOrder(Authentication authentication,
+                                       @RequestBody @Valid CreateOrderRequestDto orderDto) {
+        return orderService.placeOrder((User) authentication.getPrincipal(), orderDto);
     }
 
     @GetMapping
@@ -74,7 +77,7 @@ public class OrderController {
             description = "Update the status of an order")
     public OrderResponseDto updateOrderStatus(
             @PathVariable Long id,
-            @RequestBody UpdateOrderStatusRequest updateRequest) {
+            @RequestBody @Valid UpdateOrderStatusRequest updateRequest) {
         return orderService.updateOrderStatus(id, updateRequest);
     }
 }

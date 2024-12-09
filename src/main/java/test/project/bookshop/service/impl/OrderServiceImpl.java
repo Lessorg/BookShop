@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import test.project.bookshop.dto.order.CreateOrderRequestDto;
 import test.project.bookshop.dto.order.OrderItemResponseDto;
 import test.project.bookshop.dto.order.OrderResponseDto;
 import test.project.bookshop.dto.order.UpdateOrderStatusRequest;
@@ -34,12 +35,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public OrderResponseDto placeOrder(User currentUser) {
+    public OrderResponseDto placeOrder(User currentUser, CreateOrderRequestDto requestDto) {
         Order order = new Order();
         order.setUser(currentUser);
         order.setStatus(Order.Status.PENDING);
         order.setOrderDate(LocalDateTime.now());
-        order.setShippingAddress(currentUser.getShippingAddress());
+        order.setShippingAddress(requestDto.shippingAddress());
 
         Set<CartItem> cartContent =
                 shoppingCartRepository

@@ -2,14 +2,14 @@ package test.project.bookshop.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import test.project.bookshop.dto.order.CreateOrderRequestDto;
 import test.project.bookshop.dto.order.OrderItemResponseDto;
 import test.project.bookshop.dto.order.OrderResponseDto;
 import test.project.bookshop.dto.order.UpdateOrderStatusRequest;
 import test.project.bookshop.model.User;
 
 public interface OrderService {
-
-    OrderResponseDto placeOrder(User user);
+    OrderResponseDto placeOrder(User user, CreateOrderRequestDto requestDto);
 
     Page<OrderResponseDto> getOrderHistory(Long id, Pageable pageable);
 
