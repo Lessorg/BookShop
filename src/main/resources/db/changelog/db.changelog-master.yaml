@@ -25,4 +25,8 @@ databaseChangeLog:
       file: db/changelog/changes/12-add-random-books.yaml
   - include:
       file: db/changelog/changes/13-add-books-categories.yaml
+  - include:
+      file: db/changelog/changes/14-create-orders-table.yaml
+  - include:
+      file: db/changelog/changes/15-create-orders-items-table.yaml
       

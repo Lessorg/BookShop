@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import test.project.bookshop.exception.EntityNotFoundException;
-import test.project.bookshop.repository.user.UserRepository;
+import test.project.bookshop.repository.UserRepository;
 
 @RequiredArgsConstructor
 @Service

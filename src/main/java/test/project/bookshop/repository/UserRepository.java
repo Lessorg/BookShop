@@ -1,4 +1,4 @@
-package test.project.bookshop.repository.user;
+package test.project.bookshop.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;

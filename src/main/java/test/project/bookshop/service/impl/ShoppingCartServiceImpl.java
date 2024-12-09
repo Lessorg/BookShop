@@ -13,8 +13,8 @@ import test.project.bookshop.mapper.ShoppingCartMapper;
 import test.project.bookshop.model.CartItem;
 import test.project.bookshop.model.ShoppingCart;
 import test.project.bookshop.model.User;
-import test.project.bookshop.repository.cart.item.CartItemRepository;
-import test.project.bookshop.repository.shopping.cart.ShoppingCartRepository;
+import test.project.bookshop.repository.CartItemRepository;
+import test.project.bookshop.repository.ShoppingCartRepository;
 import test.project.bookshop.service.BookService;
 import test.project.bookshop.service.ShoppingCartService;
 
@@ -74,7 +74,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     private ShoppingCart findUserCart(Long userId) {
-        return shoppingCartRepository.findByUserIdFetchCartItemsAndBooks(userId)
+        return shoppingCartRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Shopping cart not found for user: " + userId));
     }
