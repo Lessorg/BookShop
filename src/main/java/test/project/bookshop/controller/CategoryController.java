@@ -64,6 +64,7 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(
             summary = "Create a new category",
             description = "Create a new category")
@@ -74,10 +75,10 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
             summary = "Delete a category",
             description = "Delete a category by its unique identifier")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
     }
