@@ -37,7 +37,7 @@ import test.project.bookshop.dto.book.BookWithoutCategoryIdsDto;
 @Sql(scripts = "/db/add-test-books.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/db/clean-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class BookControllerTests {
-
+    public static final long NONEXISTENT_BOOK_ID = 999L;
     protected static MockMvc mockMvc;
 
     @Autowired
@@ -137,6 +137,76 @@ class BookControllerTests {
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(updatedBook)));
+    }
+
+    @Test
+    @DisplayName("Unauthorized user cannot create a new book")
+    void createBook_UnauthorizedUser_Forbidden() throws Exception {
+        BookRequestDto requestDto = getBookRequestDto();
+
+        mockMvc.perform(post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Fail to create book with invalid input")
+    void createBook_InvalidRequest_BadRequest() throws Exception {
+        BookRequestDto invalidRequestDto = new BookRequestDto();
+
+        mockMvc.perform(post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequestDto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Fail to retrieve a book with a nonexistent ID")
+    void getBookById_NonexistentId_NotFound() throws Exception {
+        Long nonexistentBookId = NONEXISTENT_BOOK_ID;
+
+        mockMvc.perform(get("/books/{id}", nonexistentBookId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Fail to search books with nonexistent parameters")
+    void searchBooks_InvalidParameters_BadRequest() throws Exception {
+        mockMvc.perform(get("/books/search")
+                        .param("authors", "")
+                        .param("titles", "")
+                        .param("isbns", "nonexistent-isbn")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Fail to update a nonexistent book")
+    void updateBook_NonexistentId_NotFound() throws Exception {
+        Long nonexistentBookId = NONEXISTENT_BOOK_ID;
+        BookRequestDto requestDto = getBookRequestDto();
+
+        mockMvc.perform(put("/books/{id}", nonexistentBookId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Fail to delete a nonexistent book")
+    void deleteBook_NonexistentId_NotFound() throws Exception {
+        Long nonexistentBookId = NONEXISTENT_BOOK_ID;
+
+        mockMvc.perform(delete("/books/{id}", nonexistentBookId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     private List<BookDto> createBookDtoList() {

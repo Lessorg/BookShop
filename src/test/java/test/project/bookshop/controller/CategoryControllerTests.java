@@ -36,6 +36,7 @@ import test.project.bookshop.dto.category.CategoryRequestDto;
 @Sql(scripts = "/db/add-test-books.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/db/clean-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class CategoryControllerTests {
+    public static final long NONEXISTENT_CATEGORY_ID = 999L;
     protected static MockMvc mockMvc;
 
     @Autowired
@@ -133,6 +134,88 @@ class CategoryControllerTests {
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(updatedCategory)));
+    }
+
+    @Test
+    @DisplayName("Unauthorized user cannot create a category")
+    void createCategory_UnauthorizedUser_Forbidden() throws Exception {
+        CategoryRequestDto requestDto = createCategoryRequestDto();
+
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Fail to create category with invalid input")
+    void createCategory_InvalidRequest_BadRequest() throws Exception {
+        CategoryRequestDto invalidRequestDto = new CategoryRequestDto("", "");
+
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequestDto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Fail to retrieve a category with a nonexistent ID")
+    void getCategoryById_NonexistentId_NotFound() throws Exception {
+        Long nonexistentCategoryId = NONEXISTENT_CATEGORY_ID;
+
+        mockMvc.perform(get("/categories/{id}", nonexistentCategoryId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Fail to retrieve books for a nonexistent category")
+    void getBooksByCategoryId_NonexistentId_NotFound() throws Exception {
+        Long nonexistentCategoryId = NONEXISTENT_CATEGORY_ID;
+
+        mockMvc.perform(get("/categories/{id}/books", nonexistentCategoryId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Fail to update a nonexistent category")
+    void updateCategory_NonexistentId_NotFound() throws Exception {
+        Long nonexistentCategoryId = NONEXISTENT_CATEGORY_ID;
+        CategoryRequestDto requestDto = createCategoryRequestDto();
+
+        mockMvc.perform(put("/categories/{id}", nonexistentCategoryId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Fail to delete a nonexistent category")
+    void deleteCategory_NonexistentId_NotFound() throws Exception {
+        Long nonexistentCategoryId = NONEXISTENT_CATEGORY_ID;
+
+        mockMvc.perform(delete("/categories/{id}", nonexistentCategoryId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Fail to update category with invalid input")
+    void updateCategory_InvalidRequest_BadRequest() throws Exception {
+        Long categoryId = 1L;
+        CategoryRequestDto invalidRequestDto = new CategoryRequestDto("", "");
+
+        mockMvc.perform(put("/categories/{id}", categoryId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequestDto)))
+                .andExpect(status().isBadRequest());
     }
 
     private List<CategoryDto> createCategoryDtoList() {

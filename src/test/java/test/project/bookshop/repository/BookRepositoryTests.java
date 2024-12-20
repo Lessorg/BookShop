@@ -1,7 +1,10 @@
 package test.project.bookshop.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +31,8 @@ public class BookRepositoryTests {
 
         Page<Book> actual = bookRepository.findAllByCategoriesId(categoryId, pageable);
 
-        Assertions.assertEquals(3, actual.getContent().size());
-        Assertions.assertEquals("Pride and Prejudice", actual.getContent().get(0).getTitle());
+        assertEquals(3, actual.getContent().size());
+        assertEquals("Pride and Prejudice", actual.getContent().get(0).getTitle());
     }
 
     @Test
@@ -39,9 +42,9 @@ public class BookRepositoryTests {
 
         Page<Book> actual = bookRepository.findAll(pageable);
 
-        Assertions.assertEquals(5, actual.getContent().size());
-        Assertions.assertEquals("Pride and Prejudice", actual.getContent().get(0).getTitle());
-        Assertions.assertFalse(actual.getContent().get(0).getCategories().isEmpty());
+        assertEquals(5, actual.getContent().size());
+        assertEquals("Pride and Prejudice", actual.getContent().get(0).getTitle());
+        assertFalse(actual.getContent().get(0).getCategories().isEmpty());
     }
 
     @Test
@@ -51,9 +54,9 @@ public class BookRepositoryTests {
 
         Optional<Book> actual = bookRepository.findById(bookId);
 
-        Assertions.assertTrue(actual.isPresent());
-        Assertions.assertEquals("Pride and Prejudice", actual.get().getTitle());
-        Assertions.assertEquals(1, actual.get().getCategories().size());
+        assertTrue(actual.isPresent());
+        assertEquals("Pride and Prejudice", actual.get().getTitle());
+        assertEquals(1, actual.get().getCategories().size());
     }
 
     @Test
@@ -64,7 +67,7 @@ public class BookRepositoryTests {
 
         Page<Book> actual = bookRepository.findAllByCategoriesId(categoryId, pageable);
 
-        Assertions.assertEquals(0, actual.getContent().size());
+        assertEquals(0, actual.getContent().size());
     }
 
     @Test
@@ -74,6 +77,6 @@ public class BookRepositoryTests {
 
         Optional<Book> actual = bookRepository.findById(bookId);
 
-        Assertions.assertTrue(actual.isEmpty());
+        assertTrue(actual.isEmpty());
     }
 }

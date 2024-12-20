@@ -66,7 +66,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<BookDto> findBooksByCategoryId(Long id, Pageable pageable) {
-        return bookRepository.findAllByCategoriesId(id, pageable).map(bookMapper::toDto);
+        Page<Book> books = bookRepository.findAllByCategoriesId(id, pageable);
+        if (books.isEmpty()) {
+            throw new EntityNotFoundException("Can't find books by category id: " + id);
+        }
+        return books.map(bookMapper::toDto);
     }
 
     @Override
@@ -78,6 +82,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookDto> search(BookSearchParametersDto searchParameters, Pageable pageable) {
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(searchParameters);
-        return bookRepository.findAll(bookSpecification, pageable).map(bookMapper::toDto);
+        Page<Book> books = bookRepository.findAll(bookSpecification, pageable);
+        if (books.isEmpty()) {
+            throw new EntityNotFoundException("Can't find book with parameters: "
+                    + searchParameters);
+        }
+        return books.map(bookMapper::toDto);
     }
 }
