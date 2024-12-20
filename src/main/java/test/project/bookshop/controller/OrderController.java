@@ -32,7 +32,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Place an order",
             description = "Place an order for the items in the user's shopping cart")
     public OrderResponseDto placeOrder(Authentication authentication,
@@ -41,7 +41,7 @@ public class OrderController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "View order history",
             description = "Retrieve the user's past orders")
     public Page<OrderResponseDto> getOrderHistory(
@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}/items")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "View order items",
             description = "Retrieve all items for a specific order")
     public Page<OrderItemResponseDto> getOrderItems(
@@ -62,7 +62,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}/items/{itemId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "View specific order item",
             description = "Retrieve details of a specific item in an order")
     public OrderItemResponseDto getOrderItem(

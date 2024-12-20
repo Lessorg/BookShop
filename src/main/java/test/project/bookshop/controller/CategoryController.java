@@ -33,7 +33,7 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final BookService bookService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping
     @Operation(
             summary = "Get all categories",
@@ -43,7 +43,7 @@ public class CategoryController {
         return categoryService.findAll(pageable);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(
             summary = "Get books by category ID",
             description = "Retrieve a list of books for a specific category ID with pagination")
@@ -54,7 +54,7 @@ public class CategoryController {
         return bookService.findBooksByCategoryId(id, pageable);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(
             summary = "Get category by ID",
             description = "Retrieve a category by its unique identifier")

@@ -50,7 +50,6 @@ class CategoryServiceImplTests {
 
         when(categoryRepository.findAll(PAGEABLE)).thenReturn(pagedCategories);
         when(categoryMapper.toDto(category)).thenReturn(categoryDto);
-
         Page<CategoryDto> actual = categoryService.findAll(PAGEABLE);
 
         assertEquals(pagedCategoryDtos, actual);
@@ -66,7 +65,6 @@ class CategoryServiceImplTests {
 
         when(categoryRepository.findById(EXISTING_CATEGORY_ID)).thenReturn(Optional.of(category));
         when(categoryMapper.toDto(category)).thenReturn(categoryDto);
-
         CategoryDto actual = categoryService.getById(EXISTING_CATEGORY_ID);
 
         assertEquals(categoryDto, actual);
@@ -78,7 +76,6 @@ class CategoryServiceImplTests {
     @DisplayName("Get category by ID when category does not exist")
     void getById_CategoryNotExists_ThrowsException() {
         when(categoryRepository.findById(NON_EXISTENT_CATEGORY_ID)).thenReturn(Optional.empty());
-
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> categoryService.getById(NON_EXISTENT_CATEGORY_ID));
 
@@ -98,7 +95,6 @@ class CategoryServiceImplTests {
         when(categoryMapper.toCategory(categoryRequestDto)).thenReturn(category);
         when(categoryRepository.save(category)).thenReturn(savedCategory);
         when(categoryMapper.toDto(savedCategory)).thenReturn(savedCategoryDto);
-
         CategoryDto actual = categoryService.save(categoryRequestDto);
 
         assertEquals(savedCategoryDto, actual);
@@ -121,7 +117,6 @@ class CategoryServiceImplTests {
                 existingCategory);
         when(categoryRepository.save(existingCategory)).thenReturn(updatedCategory);
         when(categoryMapper.toDto(updatedCategory)).thenReturn(updatedCategoryDto);
-
         CategoryDto actual = categoryService.update(EXISTING_CATEGORY_ID, categoryRequestDto);
 
         assertEquals(updatedCategoryDto, actual);
@@ -137,7 +132,6 @@ class CategoryServiceImplTests {
         CategoryRequestDto categoryRequestDto = getCategoryRequestDto();
 
         when(categoryRepository.findById(NON_EXISTENT_CATEGORY_ID)).thenReturn(Optional.empty());
-
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> categoryService.update(NON_EXISTENT_CATEGORY_ID, categoryRequestDto));
 
@@ -149,8 +143,7 @@ class CategoryServiceImplTests {
     @Test
     @DisplayName("Delete category by ID when category exists")
     void deleteById_CategoryExists_DeletesSuccessfully() {
-        when(categoryRepository.existsById(EXISTING_CATEGORY_ID)).thenReturn(true);
-
+        when(categoryRepository.existsById(EXISTING_CATEGORY_ID)).thenReturn(Boolean.TRUE);
         categoryService.deleteById(EXISTING_CATEGORY_ID);
 
         verify(categoryRepository).existsById(EXISTING_CATEGORY_ID);
@@ -160,8 +153,8 @@ class CategoryServiceImplTests {
     @Test
     @DisplayName("Delete category by ID when category does not exist")
     void deleteById_CategoryNotExists_ThrowsException() {
-        when(categoryRepository.existsById(NON_EXISTENT_CATEGORY_ID)).thenReturn(false);
-
+        when(categoryRepository.existsById(NON_EXISTENT_CATEGORY_ID)).thenReturn(
+                Boolean.FALSE);
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> categoryService.deleteById(NON_EXISTENT_CATEGORY_ID));
 

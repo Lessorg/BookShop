@@ -1,16 +1,11 @@
 package test.project.bookshop.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,35 +16,27 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import test.project.bookshop.dto.book.BookDto;
 import test.project.bookshop.dto.category.CategoryDto;
 import test.project.bookshop.dto.category.CategoryRequestDto;
-import test.project.bookshop.service.BookService;
-import test.project.bookshop.service.CategoryService;
-import test.project.bookshop.utils.JwtUtil;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@Sql(scripts = "/db/add-test-books.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/db/clean-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class CategoryControllerTests {
     protected static MockMvc mockMvc;
-
-    @MockBean
-    private CategoryService categoryService;
-
-    @MockBean
-    private BookService bookService;
-
-    @MockBean
-    private JwtUtil jwtUtil;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -66,24 +53,14 @@ class CategoryControllerTests {
     @WithMockUser(roles = "USER")
     @DisplayName("Get all categories successfully")
     void getAllCategories_Success() throws Exception {
-        List<CategoryDto> categories = List.of(
-                new CategoryDto(1L, "Fiction", "Books in the fiction category"),
-                new CategoryDto(2L, "Non-Fiction", "Books in the non-fiction category")
-        );
-        Page<CategoryDto> page = new PageImpl<>(categories);
-        String expectedResponseJson = objectMapper.writeValueAsString(page);
+        List<CategoryDto> categories = createCategoryDtoList();
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<CategoryDto> page = new PageImpl<>(categories, pageRequest, categories.size());
 
-        when(categoryService.findAll(any())).thenReturn(page);
-
-        MvcResult result = mockMvc.perform(get("/categories")
+        mockMvc.perform(get("/categories")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andReturn();
-
-        String actualResponse = result.getResponse().getContentAsString();
-        assertEquals(expectedResponseJson, actualResponse);
-
-        verify(categoryService).findAll(any());
+                .andExpect(content().json(objectMapper.writeValueAsString(page)));
     }
 
     @Test
@@ -91,21 +68,14 @@ class CategoryControllerTests {
     @DisplayName("Get books by category ID successfully")
     void getBooksByCategoryId_Success() throws Exception {
         Long categoryId = 1L;
-        List<BookDto> books = List.of(getBookDto(1L), getBookDto(2L));
-        Page<BookDto> page = new PageImpl<>(books);
-        String expectedResponseJson = objectMapper.writeValueAsString(page);
+        List<BookDto> books = createBookDtos();
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<BookDto> page = new PageImpl<>(books, pageRequest, books.size());
 
-        when(bookService.findBooksByCategoryId(eq(categoryId), any())).thenReturn(page);
-
-        MvcResult result = mockMvc.perform(get("/categories/{id}/books", categoryId)
+        mockMvc.perform(get("/categories/{id}/books", categoryId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andReturn();
-
-        String actualResponse = result.getResponse().getContentAsString();
-        assertEquals(expectedResponseJson, actualResponse);
-
-        verify(bookService).findBooksByCategoryId(eq(categoryId), any());
+                .andExpect(content().json(objectMapper.writeValueAsString(page)));
     }
 
     @Test
@@ -113,45 +83,27 @@ class CategoryControllerTests {
     @DisplayName("Get category by ID successfully")
     void getCategoryById_Success() throws Exception {
         Long categoryId = 1L;
-        CategoryDto expectedCategory = new CategoryDto(categoryId, "Fiction",
-                "Books in the fiction category");
-        String expectedResponseJson = objectMapper.writeValueAsString(expectedCategory);
+        CategoryDto category = createCategoryDto(categoryId);
 
-        when(categoryService.getById(categoryId)).thenReturn(expectedCategory);
-
-        MvcResult result = mockMvc.perform(get("/categories/{id}", categoryId)
+        mockMvc.perform(get("/categories/{id}", categoryId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andReturn();
-
-        String actualResponse = result.getResponse().getContentAsString();
-        assertEquals(expectedResponseJson, actualResponse);
-
-        verify(categoryService).getById(categoryId);
+                .andExpect(content().json(objectMapper.writeValueAsString(category)));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Create a category successfully")
     void createCategory_Success() throws Exception {
-        CategoryRequestDto requestDto = new CategoryRequestDto("Fiction",
-                "Books in the fiction category");
-        CategoryDto expectedCategory = new CategoryDto(1L, "Fiction",
-                "Books in the fiction category");
-        String expectedResponseJson = objectMapper.writeValueAsString(expectedCategory);
+        Long categoryId = 4L;
+        CategoryRequestDto requestDto = createCategoryRequestDto();
+        CategoryDto expectedCategory = createExpectedCategoryDto(categoryId);
 
-        when(categoryService.save(any())).thenReturn(expectedCategory);
-
-        MvcResult result = mockMvc.perform(post("/categories")
+        mockMvc.perform(post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isCreated())
-                .andReturn();
-
-        String actualResponse = result.getResponse().getContentAsString();
-        assertEquals(expectedResponseJson, actualResponse);
-
-        verify(categoryService).save(any());
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedCategory)));
     }
 
     @Test
@@ -160,13 +112,12 @@ class CategoryControllerTests {
     void deleteCategory_Success() throws Exception {
         Long categoryId = 1L;
 
-        doNothing().when(categoryService).deleteById(categoryId);
-
         mockMvc.perform(delete("/categories/{id}", categoryId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-
-        verify(categoryService).deleteById(categoryId);
+        mockMvc.perform(get("/categories/{id}", categoryId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -174,36 +125,75 @@ class CategoryControllerTests {
     @DisplayName("Update a category successfully")
     void updateCategory_Success() throws Exception {
         Long categoryId = 1L;
-        CategoryRequestDto requestDto = new CategoryRequestDto("Fiction Updated",
-                "Updated description");
-        CategoryDto updatedCategory = new CategoryDto(categoryId, "Fiction Updated",
-                "Updated description");
-        String expectedResponseJson = objectMapper.writeValueAsString(updatedCategory);
+        CategoryRequestDto requestDto = createCategoryRequestDto();
+        CategoryDto updatedCategory = createExpectedCategoryDto(categoryId);
 
-        when(categoryService.update(eq(categoryId), any())).thenReturn(updatedCategory);
-
-        MvcResult result = mockMvc.perform(put("/categories/{id}", categoryId)
+        mockMvc.perform(put("/categories/{id}", categoryId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andReturn();
-
-        String actualResponse = result.getResponse().getContentAsString();
-        assertEquals(expectedResponseJson, actualResponse);
-
-        verify(categoryService).update(eq(categoryId), any());
+                .andExpect(content().json(objectMapper.writeValueAsString(updatedCategory)));
     }
 
-    private BookDto getBookDto(Long id) {
-        BookDto bookDto = new BookDto();
-        bookDto.setId(id);
-        bookDto.setTitle("Effective Java");
-        bookDto.setAuthor("Joshua Bloch");
-        bookDto.setIsbn("978-0134685991");
-        bookDto.setDescription("A comprehensive guide to programming in Java");
-        bookDto.setCoverImage("cover-image-url");
-        bookDto.setPrice(BigDecimal.valueOf(45.00));
-        bookDto.setCategoryIds(Set.of(1L, 2L));
-        return bookDto;
+    private List<CategoryDto> createCategoryDtoList() {
+        return List.of(
+                new CategoryDto(1L,
+                        "Fiction", "Books that contain fictional stories and characters."),
+                new CategoryDto(2L,
+                        "Science", "Books that explore scientific concepts and discoveries."),
+                new CategoryDto(3L,
+                        "History", "Books that delve into historical events and figures.")
+        );
+    }
+
+    private List<BookDto> createBookDtos() {
+        BookDto book1 = new BookDto();
+        book1.setId(1L);
+        book1.setTitle("Pride and Prejudice");
+        book1.setAuthor("Jane Austen");
+        book1.setIsbn("978-3-16-148410-0");
+        book1.setDescription("A classic novel about love and social standing.");
+        book1.setCoverImage("http://example.com/pride_and_prejudice.jpg");
+        book1.setPrice(BigDecimal.valueOf(9.99));
+        book1.setCategoryIds(Set.of(1L));
+
+        BookDto book2 = new BookDto();
+        book2.setId(4L);
+        book2.setTitle("The Great Gatsby");
+        book2.setAuthor("F. Scott Fitzgerald");
+        book2.setIsbn("978-0-7432-7356-5");
+        book2.setDescription("A novel about the American dream and the Roaring Twenties.");
+        book2.setCoverImage("http://example.com/the_great_gatsby.jpg");
+        book2.setPrice(BigDecimal.valueOf(10.99));
+        book2.setCategoryIds(Set.of(1L));
+
+        BookDto book3 = new BookDto();
+        book3.setId(5L);
+        book3.setTitle("Moby Dick");
+        book3.setAuthor("Herman Melville");
+        book3.setIsbn("978-0-14-243724-7");
+        book3.setDescription("A novel about the obsessive quest of Ahab for revenge on Moby Dick.");
+        book3.setCoverImage("http://example.com/moby_dick.jpg");
+        book3.setPrice(BigDecimal.valueOf(11.99));
+        book3.setCategoryIds(Set.of(1L));
+
+        return List.of(book1, book2, book3);
+    }
+
+    private CategoryRequestDto createCategoryRequestDto() {
+        return new CategoryRequestDto("Test", "Test description");
+    }
+
+    private CategoryDto createExpectedCategoryDto(Long id) {
+        return new CategoryDto(id, "Test", "Test description");
+    }
+
+    private CategoryDto createCategoryDto(Long id) {
+        return createCategoryDtoList()
+                .stream()
+                .filter(category -> category.id().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Category with ID " + id + " not found"));
     }
 }

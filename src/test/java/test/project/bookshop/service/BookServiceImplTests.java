@@ -103,7 +103,6 @@ class BookServiceImplTests {
         when(bookRepository.findById(FIRST_BOOK_ID)).thenReturn(Optional.of(firstBook));
         when(bookMapper.toDtoWithoutCategories(firstBook))
                 .thenReturn(bookWithoutCategoryIdsDto);
-
         BookWithoutCategoryIdsDto actual = bookService.findById(FIRST_BOOK_ID);
 
         assertEquals(bookWithoutCategoryIdsDto, actual);
@@ -124,7 +123,7 @@ class BookServiceImplTests {
     @Test
     @DisplayName("Delete book by ID")
     void delete_BookExists_DeletesSuccessfully() {
-        when(bookRepository.existsById(FIRST_BOOK_ID)).thenReturn(true);
+        when(bookRepository.existsById(FIRST_BOOK_ID)).thenReturn(Boolean.TRUE);
         bookService.delete(FIRST_BOOK_ID);
 
         verify(bookRepository).existsById(FIRST_BOOK_ID);
@@ -134,7 +133,7 @@ class BookServiceImplTests {
     @Test
     @DisplayName("Delete book by ID - Book does not exist")
     void delete_BookNotExists_ThrowsEntityNotFoundException() {
-        when(bookRepository.existsById(NON_EXISTENT_BOOK_ID)).thenReturn(false);
+        when(bookRepository.existsById(NON_EXISTENT_BOOK_ID)).thenReturn(Boolean.FALSE);
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> bookService.delete(NON_EXISTENT_BOOK_ID));
 
@@ -157,7 +156,6 @@ class BookServiceImplTests {
                 .thenReturn(categories);
         when(bookRepository.save(firstBook)).thenReturn(firstBook);
         when(bookMapper.toDto(firstBook)).thenReturn(firstBookDto);
-
         BookDto actual = bookService.update(FIRST_BOOK_ID, bookRequestDto);
 
         assertEquals(firstBookDto, actual);
@@ -206,8 +204,8 @@ class BookServiceImplTests {
         when(bookSpecificationBuilder.build(searchParameters)).thenReturn(bookSpecification);
         when(bookRepository.findAll(bookSpecification, PAGEABLE)).thenReturn(pagedBooks);
         when(bookMapper.toDto(firstBook)).thenReturn(firstBookDto);
-        Page<BookDto> actual = bookService.search(searchParameters, PAGEABLE);
 
+        Page<BookDto> actual = bookService.search(searchParameters, PAGEABLE);
         Page<BookDto> pagedBookDtos = new PageImpl<>(bookDtoList, PAGEABLE, bookDtoList.size());
         assertEquals(pagedBookDtos.getContent(), actual.getContent());
         assertEquals(pagedBookDtos.getTotalElements(), actual.getTotalElements());
