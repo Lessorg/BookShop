@@ -18,6 +18,7 @@ import test.project.bookshop.repository.book.BookRepository;
 
 @DataJpaTest
 @Sql(scripts = "/db/add-test-books.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/db/clean-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BookRepositoryTests {
     @Autowired

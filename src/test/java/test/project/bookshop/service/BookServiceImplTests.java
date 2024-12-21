@@ -68,6 +68,8 @@ class BookServiceImplTests {
         BookDto actual = bookService.save(bookRequestDto);
 
         assertEquals(firstBookDto, actual);
+        verify(bookMapper).toBook(bookRequestDto);
+        verify(bookMapper).toDto(firstBook);
         verify(categoryService).findCategoriesByIds(bookRequestDto.getCategoryIds());
         verify(bookRepository).save(firstBook);
     }
@@ -107,6 +109,7 @@ class BookServiceImplTests {
 
         assertEquals(bookWithoutCategoryIdsDto, actual);
         verify(bookRepository).findById(FIRST_BOOK_ID);
+        verify(bookMapper).toDtoWithoutCategories(firstBook);
     }
 
     @Test
@@ -118,6 +121,7 @@ class BookServiceImplTests {
                         () -> bookService.findById(NON_EXISTENT_BOOK_ID));
 
         assertEquals("Can't find book by id: " + NON_EXISTENT_BOOK_ID, exception.getMessage());
+        verify(bookRepository).findById(NON_EXISTENT_BOOK_ID);
     }
 
     @Test
@@ -159,8 +163,10 @@ class BookServiceImplTests {
         BookDto actual = bookService.update(FIRST_BOOK_ID, bookRequestDto);
 
         assertEquals(firstBookDto, actual);
+        verify(bookRepository).findById(FIRST_BOOK_ID);
         verify(categoryService).findCategoriesByIds(bookRequestDto.getCategoryIds());
         verify(bookRepository).save(firstBook);
+        verify(bookMapper).toDto(firstBook);
     }
 
     @Test
@@ -211,6 +217,7 @@ class BookServiceImplTests {
         assertEquals(pagedBookDtos.getTotalElements(), actual.getTotalElements());
         verify(bookSpecificationBuilder).build(searchParameters);
         verify(bookRepository).findAll(bookSpecification, PAGEABLE);
+        verify(bookMapper).toDto(firstBook);
     }
 
     private BookRequestDto getBookRequestDto() {
