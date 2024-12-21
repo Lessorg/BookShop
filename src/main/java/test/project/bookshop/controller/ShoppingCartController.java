@@ -30,7 +30,7 @@ import test.project.bookshop.service.ShoppingCartService;
 public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(
             summary = "Add book to shopping cart",
@@ -40,7 +40,7 @@ public class ShoppingCartController {
         return shoppingCartService.add(getUserId(authentication), bookToCartDto);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping
     @Operation(
             summary = "Get shopping cart contents",
@@ -49,7 +49,7 @@ public class ShoppingCartController {
         return shoppingCartService.getCartByUserId(getUserId(authentication));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @PutMapping("/items/{cartItemId}")
     @Operation(
             summary = "Update quantity of an item in the cart",
@@ -62,7 +62,7 @@ public class ShoppingCartController {
                 cartItemId, updateCartItemRequest);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/items/{cartItemId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
