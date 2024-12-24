@@ -3,7 +3,7 @@ services:
     platform: linux/amd64
     image: mysql:latest
     restart: unless-stopped
-    env_file: ./.env
+    env_file: .env
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -23,7 +23,7 @@ services:
     restart: on-failure
     image: post-service
     build: .
-    env_file: ./.env
+    env_file: .env
     ports:
       - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
       - "${DEBUG_PORT}:${DEBUG_PORT}"
