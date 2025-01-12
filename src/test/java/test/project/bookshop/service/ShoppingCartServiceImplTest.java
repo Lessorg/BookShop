@@ -185,7 +185,8 @@ class ShoppingCartServiceImplTest {
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> shoppingCartService.delete(USER_ID, CART_ITEM_ID));
-        assertEquals("Cart item with id " + CART_ITEM_ID + " does not exist.", exception.getMessage());
+        assertEquals("Cart item with id " + CART_ITEM_ID + " does not exist.",
+                exception.getMessage());
         verify(cartItemRepository).existsById(CART_ITEM_ID);
     }
 
