@@ -2,7 +2,6 @@ package test.project.bookshop.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,6 +11,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -53,12 +53,16 @@ class ShoppingCartServiceImplTest {
     @DisplayName("Create a shopping cart for a user")
     void createShoppingCartForUser_Success() {
         User user = new User();
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
 
         shoppingCartService.createShoppingCartForUser(user);
 
-        verify(shoppingCartRepository).save(any(ShoppingCart.class));
+        ArgumentCaptor<ShoppingCart> captor = ArgumentCaptor.forClass(ShoppingCart.class);
+        verify(shoppingCartRepository).save(captor.capture());
+
+        ShoppingCart capturedCart = captor.getValue();
+        assertEquals(user, capturedCart.getUser(),
+                "The shopping cart's user "
+                        + capturedCart.getUser() + " should match the given user: " + user);
     }
 
     @Test
