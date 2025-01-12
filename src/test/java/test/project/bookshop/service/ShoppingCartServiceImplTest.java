@@ -91,9 +91,10 @@ class ShoppingCartServiceImplTest {
         AddBookToCartDto addBookToCartDto = new AddBookToCartDto(BOOK_ID, 1);
 
         when(shoppingCartRepository.findByUserId(USER_ID)).thenReturn(Optional.empty());
-
-        assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> shoppingCartService.add(USER_ID, addBookToCartDto));
+
+        assertEquals("Shopping cart not found for user: " + USER_ID, exception.getMessage());
         verify(shoppingCartRepository).findByUserId(USER_ID);
     }
 
@@ -121,8 +122,9 @@ class ShoppingCartServiceImplTest {
     void getCartByUserId_ShoppingCartNotFound() {
         when(shoppingCartRepository.findByUserId(USER_ID)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> shoppingCartService.getCartByUserId(USER_ID));
+        assertEquals("Shopping cart not found for user: " + USER_ID, exception.getMessage());
         verify(shoppingCartRepository).findByUserId(USER_ID);
     }
 
@@ -155,8 +157,9 @@ class ShoppingCartServiceImplTest {
 
         when(cartItemRepository.findCartItemById(CART_ITEM_ID)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> shoppingCartService.update(USER_ID, CART_ITEM_ID, updateRequest));
+        assertEquals("Cart item with id " + CART_ITEM_ID + " not found.", exception.getMessage());
         verify(cartItemRepository).findCartItemById(CART_ITEM_ID);
     }
 
@@ -176,8 +179,9 @@ class ShoppingCartServiceImplTest {
     void deleteCartItem_NotFound() {
         when(cartItemRepository.existsById(CART_ITEM_ID)).thenReturn(false);
 
-        assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> shoppingCartService.delete(USER_ID, CART_ITEM_ID));
+        assertEquals("Cart item with id " + CART_ITEM_ID + " does not exist.", exception.getMessage());
         verify(cartItemRepository).existsById(CART_ITEM_ID);
     }
 
