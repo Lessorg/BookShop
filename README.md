@@ -25,6 +25,7 @@ Using technologies like Java and Spring Boot, the app delivers essential feature
 - Shopping Cart Item 📦: Tracks individual book selections and quantities in the cart.
 - Order 📤: Represents completed purchases, bundling books into transactions.
 - Order Item 📝: Details specific books within an order, including quantity and pricing.
+
 UML diagram:
 
 ![photo_2025-01-15_14-02-57](https://github.com/user-attachments/assets/8ae194ed-fce0-426d-9e1c-850b59096d72)
