@@ -28,6 +28,7 @@ import test.project.bookshop.model.ShoppingCart;
 import test.project.bookshop.model.User;
 import test.project.bookshop.repository.CartItemRepository;
 import test.project.bookshop.repository.ShoppingCartRepository;
+import test.project.bookshop.repository.UserRepository;
 import test.project.bookshop.service.impl.ShoppingCartServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,17 +49,21 @@ class ShoppingCartServiceImplTest {
     private CartItemMapper cartItemMapper;
     @Mock
     private BookService bookService;
+    @Mock
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("Create a shopping cart for a user")
     void createShoppingCartForUser_Success() {
         User user = new User();
+        user.setId(USER_ID);
 
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
         shoppingCartService.createShoppingCartForUser(user);
-
         ArgumentCaptor<ShoppingCart> captor = ArgumentCaptor.forClass(ShoppingCart.class);
-        verify(shoppingCartRepository).save(captor.capture());
 
+        verify(userRepository).findById(USER_ID);
+        verify(shoppingCartRepository).save(captor.capture());
         ShoppingCart capturedCart = captor.getValue();
         assertEquals(user, capturedCart.getUser(),
                 "The shopping cart's user "

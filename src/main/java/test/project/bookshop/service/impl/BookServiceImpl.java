@@ -10,6 +10,7 @@ import test.project.bookshop.dto.book.BookDto;
 import test.project.bookshop.dto.book.BookRequestDto;
 import test.project.bookshop.dto.book.BookSearchParametersDto;
 import test.project.bookshop.dto.book.BookWithoutCategoryIdsDto;
+import test.project.bookshop.exception.DuplicateIsbnException;
 import test.project.bookshop.exception.EntityNotFoundException;
 import test.project.bookshop.mapper.BookMapper;
 import test.project.bookshop.model.Book;
@@ -29,6 +30,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(BookRequestDto bookRequestDto) {
+        if (bookRepository.existsByIsbn(bookRequestDto.getIsbn())) {
+            throw new DuplicateIsbnException("Isbn: + "
+                    + bookRequestDto.getIsbn() + " already exists");
+        }
         Set<Category> categories =
                 categoryService.findCategoriesByIds(bookRequestDto.getCategoryIds());
         Book book = bookMapper.toBook(bookRequestDto);

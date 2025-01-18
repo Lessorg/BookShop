@@ -28,13 +28,13 @@ public class UserServiceImpl implements UserService {
             throws RegistrationException {
         if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new RegistrationException("Can't register user with email "
-                    + requestDto.getEmail());
+                    + requestDto.getEmail() + ", email already exists");
         }
         User user = userMapper.toUser(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setRoles(roleRepository.findByName(Role.RoleName.ROLE_USER));
-        userRepository.save(user);
-        shoppingCartService.createShoppingCartForUser(user);
+        User savedUser = userRepository.save(user);
+        shoppingCartService.createShoppingCartForUser(savedUser);
         return userMapper.toUserDto(user);
     }
 }
