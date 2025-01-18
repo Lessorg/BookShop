@@ -25,9 +25,7 @@ Using technologies like Java and Spring Boot, the app delivers essential feature
 - Shopping Cart Item 📦: Tracks individual book selections and quantities in the cart.
 - Order 📤: Represents completed purchases, bundling books into transactions.
 - Order Item 📝: Details specific books within an order, including quantity and pricing.
-
-UML diagram:
-
+- UML diagram:
 ![photo_2025-01-15_14-02-57](https://github.com/user-attachments/assets/8ae194ed-fce0-426d-9e1c-850b59096d72)
 # Core Functionalities ⚙️
 Roles🎭:
@@ -97,6 +95,14 @@ Development & Documentation:
 	- GET /orders/{orderId}/items/{itemId} - Get details of a specific order item
 	- PATCH /orders/{id} - Update the status of an order (Admin only)
 
+## Postman Collection
+
+To help you interact with the API endpoints easily, a [**Postman Collection**](https://lll555-8521.postman.co/workspace/LLL-Workspace~db36debb-724e-4965-8f5f-5bad78fb42cf/collection/39194239-1e0f45b3-3e90-420d-9b3f-bf34aaa97e92?action=share&creator=39194239&active-environment=39194239-5710a84a-a04c-4c22-9142-e8b091576b0b) is available.
+
+## Video Guide
+
+For a detailed walkthrough of how the API works, refer to this [**Video Guide**](https://colya-reznick.wistia.com/medias/w6x6tcavoh).
+
 # 🖥️🐳 How to Run the Bookshop Application Locally
 Follow these steps to set up and run the Bookshop application on your local machine. With its containerized architecture using Docker, deployment and management are streamlined.
 
@@ -142,4 +148,5 @@ Test the APIs using Postman or any HTTP client tool.
 - Docker Issues: Ensure Docker Desktop is running. Restart Docker if any containers fail to start.
 - Port Conflicts: Check if the ports specified in the .env file (e.g., 8080 for the app, 3306 for MySQL) are available. Modify them in .env if necessary.
 - Enjoy your journey with the Bookshop application! 📚
+
 
