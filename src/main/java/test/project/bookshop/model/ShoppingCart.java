@@ -27,7 +27,7 @@ public class ShoppingCart {
     @Id
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @MapsId
     private User user;
