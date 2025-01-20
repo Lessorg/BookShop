@@ -163,7 +163,7 @@ class ShoppingCartControllerTests {
         mockMvc.perform(post("/cart")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     private CartResponseDto createCartResponseDto() {

@@ -54,6 +54,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DuplicateIsbnException.class)
+    public ResponseEntity<Object> handleDuplicateIsbnException(
+            DuplicateIsbnException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT);
+        body.put("error", ex.getMessage());
+        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.CONFLICT);
+    }
+
     private String getErrorMessage(ObjectError e) {
         if (e instanceof FieldError fieldError) {
             String fieldName = fieldError.getField();

@@ -15,6 +15,7 @@ import test.project.bookshop.model.ShoppingCart;
 import test.project.bookshop.model.User;
 import test.project.bookshop.repository.CartItemRepository;
 import test.project.bookshop.repository.ShoppingCartRepository;
+import test.project.bookshop.repository.UserRepository;
 import test.project.bookshop.service.BookService;
 import test.project.bookshop.service.ShoppingCartService;
 
@@ -27,11 +28,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final CartItemRepository cartItemRepository;
     private final CartItemMapper cartItemMapper;
     private final BookService bookService;
+    private final UserRepository userRepository;
 
     @Override
     public void createShoppingCartForUser(User user) {
+        User managedUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id "
+                        + user.getId()));
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
+        shoppingCart.setUser(managedUser);
         shoppingCartRepository.save(shoppingCart);
     }
 
