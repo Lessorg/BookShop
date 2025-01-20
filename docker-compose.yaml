@@ -21,7 +21,7 @@ services:
       mysqldb:
         condition: service_healthy
     restart: on-failure
-    image: post-service
+    image: bookshop
     build: .
     env_file: .env
     ports:
